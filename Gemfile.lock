@@ -5,27 +5,43 @@ PATH
       builder
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.0)
-      rest-client
+      openid_connect
 
 GEM
   remote: https://rubygems.org/
   specs:
+    activemodel (5.2.2)
+      activesupport (= 5.2.2)
+    activesupport (5.2.2)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 0.7, < 2)
+      minitest (~> 5.1)
+      tzinfo (~> 1.1)
+    addressable (2.6.0)
+      public_suffix (>= 2.0.2, < 4.0)
+    aes_key_wrap (1.0.1)
+    attr_required (1.0.1)
+    bindata (2.4.4)
     builder (3.2.3)
-    domain_name (0.5.20180417)
-      unf (>= 0.0.5, < 1.0.0)
+    concurrent-ruby (1.1.4)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     hashie (3.6.0)
-    http-cookie (1.0.3)
-      domain_name (~> 0.5)
+    httpclient (2.8.3)
+    i18n (1.5.3)
+      concurrent-ruby (~> 1.0)
+    json-jwt (1.10.0)
+      activesupport (>= 4.2)
+      aes_key_wrap
+      bindata
     jwt (2.1.0)
-    mime-types (3.2.2)
-      mime-types-data (~> 3.2015)
-    mime-types-data (3.2018.0812)
+    mail (2.7.1)
+      mini_mime (>= 0.1.1)
+    mini_mime (1.0.1)
+    minitest (5.11.3)
     multi_json (1.13.1)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
-    netrc (0.11.0)
     oauth2 (1.4.1)
       faraday (>= 0.8, < 0.16.0)
       jwt (>= 1.0, < 3.0)
@@ -38,15 +54,41 @@ GEM
     omniauth-oauth2 (1.6.0)
       oauth2 (~> 1.1)
       omniauth (~> 1.9)
+    openid_connect (1.1.6)
+      activemodel
+      attr_required (>= 1.0.0)
+      json-jwt (>= 1.5.0)
+      rack-oauth2 (>= 1.6.1)
+      swd (>= 1.0.0)
+      tzinfo
+      validate_email
+      validate_url
+      webfinger (>= 1.0.1)
+    public_suffix (3.0.3)
     rack (2.0.6)
+    rack-oauth2 (1.9.3)
+      activesupport
+      attr_required
+      httpclient
+      json-jwt (>= 1.9.0)
+      rack
     rake (12.3.1)
-    rest-client (2.0.2)
-      http-cookie (>= 1.0.2, < 2.0)
-      mime-types (>= 1.16, < 4.0)
-      netrc (~> 0.8)
-    unf (0.1.4)
-      unf_ext
-    unf_ext (0.0.7.5)
+    swd (1.1.2)
+      activesupport (>= 3)
+      attr_required (>= 0.0.5)
+      httpclient (>= 2.4)
+    thread_safe (0.3.6)
+    tzinfo (1.2.5)
+      thread_safe (~> 0.1)
+    validate_email (0.1.6)
+      activemodel (>= 3.0)
+      mail (>= 2.2.5)
+    validate_url (1.0.2)
+      activemodel (>= 3.0.0)
+      addressable
+    webfinger (1.1.0)
+      activesupport
+      httpclient (>= 2.4)
 
 PLATFORMS
   ruby

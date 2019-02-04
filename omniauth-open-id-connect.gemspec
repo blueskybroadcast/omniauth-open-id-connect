@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'builder'
   spec.add_dependency 'omniauth', '~> 1.0'
   spec.add_dependency 'omniauth-oauth2', '~> 1.0'
-  spec.add_dependency 'rest-client'
+  spec.add_dependency 'openid_connect'
 
   spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rake'
