@@ -124,11 +124,14 @@ module OmniAuth
 
         endpoint = URI.parse(options.client_options.domain.to_s)
         return nil if !endpoint.scheme || !endpoint.host
-        @provider_domain = "#{endpoint.scheme}://#{endpoint.host}"
+        @provider_domain = options.client_options.domain.to_s
       end
 
       def discovered_configs
-        @discovered_configs ||= OpenIDConnect::Discovery::Provider::Config.discover!(provider_domain)
+        return @discovered_configs if defined?(@discovered_configs)
+        @discovered_configs = OpenIDConnect::Discovery::Provider::Config.discover!(provider_domain)
+      rescue OpenIDConnect::Discovery::DiscoveryFailed
+        @discovered_configs = OpenIDConnect::Discovery::Provider::Config.discover!(URI.join(provider_domain, '/').to_s)
       end
 
       def provider_configs_hash
