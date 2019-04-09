@@ -77,11 +77,11 @@ module OmniAuth
         user_info_response = token_response.userinfo!
 
         if options.member_type_attribute.present?
-          member_type = user_info_response.raw_attributes[options.member_type_attribute].presence
+          member_type = extract_member_type(user_info_response)
           if @identity_url.host.present? && !member_type
             openid_client.userinfo_endpoint = @identity_url
             identity_response = token_response.userinfo!
-            member_type = identity_response.raw_attributes[options.member_type_attribute].presence
+            member_type = extract_member_type(identity_response)
           end
         end
 
@@ -132,6 +132,12 @@ module OmniAuth
         @discovered_configs = OpenIDConnect::Discovery::Provider::Config.discover!(provider_domain)
       rescue OpenIDConnect::Discovery::DiscoveryFailed
         @discovered_configs = OpenIDConnect::Discovery::Provider::Config.discover!(URI.join(provider_domain, '/').to_s)
+      end
+
+      def extract_member_type(user_info_response)
+        raw_attrs = user_info_response.raw_attributes
+        raw_attrs[options.member_type_attribute].presence ||
+          raw_attrs.try('[]', 'custom_attributes').try('[]', options.member_type_attribute).presence
       end
 
       def provider_configs_hash
