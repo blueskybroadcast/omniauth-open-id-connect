@@ -16,6 +16,8 @@ module OmniAuth
       }
       option :scope, [:openid]
       option :response_type, 'code'
+      option :uid_attribute, nil
+      option :username_attribute, nil
       option :member_type_attribute, nil
       option :app_options, { app_event_id: nil }
 
@@ -87,11 +89,11 @@ module OmniAuth
 
         @app_event.logs.create(level: 'info', text: user_info_response.inspect)
         @raw_user_info = {
-          uid: user_info_response.raw_attributes['user_id'].presence || user_info_response.sub,
+          uid: extract_uid(user_info_response),
           first_name: user_info_response.given_name,
           last_name: user_info_response.family_name,
           email: user_info_response.email,
-          username: user_info_response.preferred_username || user_info_response.email,
+          username: extract_username(user_info_response),
           member_type: member_type
         }
       end
@@ -138,6 +140,26 @@ module OmniAuth
         raw_attrs = user_info_response.raw_attributes
         raw_attrs[options.member_type_attribute].presence ||
           raw_attrs.try('[]', 'custom_attributes').try('[]', options.member_type_attribute).presence
+      end
+
+      def extract_username(user_info_response)
+        raw_attrs = user_info_response.raw_attributes
+        if options.username_attribute.present?
+          raw_attrs[options.username_attribute].presence ||
+            raw_attrs.try('[]', 'custom_attributes').try('[]', options.username_attribute).presence
+        else
+          user_info_response.preferred_username || user_info_response.email
+        end
+      end
+
+      def extract_uid(user_info_response)
+        raw_attrs = user_info_response.raw_attributes
+        if options.uid_attribute.present?
+          raw_attrs[options.uid_attribute].presence ||
+            raw_attrs.try('[]', 'custom_attributes').try('[]', options.uid_attribute).presence
+        else
+          raw_attrs['user_id'].presence || user_info_response.sub
+        end
       end
 
       def provider_configs_hash
